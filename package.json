@@ -1,0 +1,26 @@
+{
+  "name": "healthcare-provider-validator",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Magesh1406/healthcare_validator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Magesh1406/healthcare_validator/issues"
+  },
+  "homepage": "https://github.com/Magesh1406/healthcare_validator#readme",
+  "description": "",
+  "devDependencies": {
+    "vite-plugin-svgr": "^4.5.0"
+  }
+}
