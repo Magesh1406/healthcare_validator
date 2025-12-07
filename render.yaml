@@ -1,0 +1,72 @@
+# PASTE THIS IN render.yaml (for Render.com deployment)
+services:
+  - type: web
+    name: healthcare-provider-backend
+    env: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: healthcare-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: healthcare-redis
+          property: connectionString
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ENVIRONMENT
+        value: production
+      - key: ALLOWED_HOSTS
+        value: healthcare-provider-validator.vercel.app,*.vercel.app
+    healthCheckPath: /api/health
+    autoDeploy: true
+    domains:
+      - api.healthcare-provider.com
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+
+  - type: web
+    name: healthcare-provider-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://api.healthcare-provider.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      - path: /*
+        name: Content-Security-Policy
+        value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.healthcare-provider.com"
+    autoDeploy: true
+    domains:
+      - healthcare-provider.com
+      - www.healthcare-provider.com
+
+databases:
+  - name: healthcare-db
+    databaseName: healthcare_db
+    user: admin
+    plan: free
+    ipAllowList: []
+
+redis:
+  - name: healthcare-redis
+    plan: free
+    ipAllowList: []
