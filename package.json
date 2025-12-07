@@ -19,8 +19,5 @@
     "url": "https://github.com/Magesh1406/healthcare_validator/issues"
   },
   "homepage": "https://github.com/Magesh1406/healthcare_validator#readme",
-  "description": "",
-  "devDependencies": {
-    "vite-plugin-svgr": "^4.5.0"
-  }
+  "description": ""
 }
